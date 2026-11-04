@@ -1,92 +1,44 @@
-console.log('#20. JavaScript homework: замовлення в інтернет-магазині')
+console.log('#21. JavaScript homework: читацький клуб')
 
-const orderObj = {
-  id: 1024,
-  customer: { firstName: 'John', lastName: 'Smith', age: 15 },
-  priceStr: '1099.99 грн',
-  quantityStr: '3',
-  deliveryDay: 3,
-  tempNote: 'службова нотатка, видалити перед відправкою',
+const memberObj = {
+  name: 'Olena',
+  yearOfBirth: 1998,
+  city: 'Львів',
+  booksPerMonth: 3,
+  favoriteGenre: 'фентезі',
 }
 
-// Крок 1. Об'єкти
-orderObj.city = 'Київ';
-console.log(`${orderObj.customer.firstName} ${orderObj.customer.lastName} from ${orderObj.city}`);
+// Завдання 1. Функція, параметри за замовчуванням, перевірка на undefined
 
-// Крок 2. in / delete
-console.log('tempNote' in orderObj); 
-delete orderObj.tempNote;
-console.log('tempNote' in orderObj);
-
-// Крок 3. Копіювання об'єктів
-const backupOrder = JSON.parse(JSON.stringify(orderObj));
-backupOrder.customer.firstName = 'Ann';
-console.log(orderObj.customer.firstName); 
-const paidOrder = Object.assign({}, orderObj, { status: 'paid' });
-console.log("status" in orderObj);
-
-// Крок 4. Перетворення типів
-let price = parseFloat(orderObj.priceStr);
-let quantity = parseInt(orderObj.quantityStr);
-let total = price * quantity;
-console.log(price);
-console.log(quantity);
-console.log(total);
-
-// Крок 5. Тернарний оператор
-let discount = orderObj.customer.age < 18 ? 0.1 : orderObj.customer.age >= 60 ? 0.15 : 0;
-let finalTotal = total * (1 - discount);
-console.log(discount);
-console.log(finalTotal);
-
-// Крок 6. if ... else if ... else
-if (finalTotal < 500) {
-  console.log('Доставка 100');
-} else if (finalTotal >= 500 && finalTotal < 1500) {
-  console.log('Доставка 50');
-} else {
-  console.log('Доставка безкоштовна');
-}
-
-// Крок 7. switch / case / default
-let deliveryDayName;
-
-switch (orderObj.deliveryDay) {
-  case 1:
-    deliveryDayName = 'понеділок';
-    break;
-  case 2:
-    deliveryDayName = 'вівторок';
-    break;
-  case 3:
-    deliveryDayName = 'середа';
-    break;
-  case 4:
-    deliveryDayName = 'четвер';
-    break;
-  case 5:
-    deliveryDayName = 'п’ятниця';
-    break;
-  case 6:
-    deliveryDayName = 'субота';
-    break;
-  case 7:
-    deliveryDayName = 'неділя';
-    break;
-  default:
-    deliveryDayName = 'невідомий день';
-}
-
-console.log(`Доставка у ${deliveryDayName}`);
-
-// Крок 8. Цикл for, оператор кома, break / continue
-let bonusSum=0;
-
-for (let i = 1; i <= 20, bonusSum <= 50; i++) {
-  if (i % 3 === 0) {
-    continue;
+function memberCard(name, yearOfBirth, favoriteGenre, city = 'Київ') {
+  if (name && name.length) {
+    name = `My name is ${name}.`;
   }
-  bonusSum += i;
+  if (yearOfBirth) {
+    let age = new Date().getFullYear() - yearOfBirth;
+    yearOfBirth = `I am ${age} years old.`;
+  }
+  if (favoriteGenre && favoriteGenre.length) {
+    favoriteGenre = `I read ${favoriteGenre}.`;
+  }
+  if (city && city.length) {
+    city = `I live in ${city}.`;
+  }
+  return `${name || ''} ${yearOfBirth || ''} ${favoriteGenre || ''} ${city || ''}`.trim();
 }
+memberCard();
+console.log(memberCard(memberObj.name, memberObj.yearOfBirth, memberObj.favoriteGenre, memberObj.city));
+console.log(memberCard(memberObj.name, memberObj.yearOfBirth, memberObj.favoriteGenre));
+console.log(memberCard(memberObj.name, memberObj.yearOfBirth, undefined, memberObj.city));
 
-console.log(`Сума бонусів: ${bonusSum}`);
+// Завдання 2. Функція і цикл for ... in
+
+function describeMember(memberObj) {
+  let result = '';
+  for (const key in memberObj) {
+      result += `${key}: ${memberObj[key]}; `;
+  }
+  return result;
+}
+describeMember(memberObj);
+console.log(describeMember(memberObj));
