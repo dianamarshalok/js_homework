@@ -1,76 +1,92 @@
+console.log('#20. JavaScript homework: замовлення в інтернет-магазині')
 
-// ==== ДАНІ (не змінювати) ====
+const orderObj = {
+  id: 1024,
+  customer: { firstName: 'John', lastName: 'Smith', age: 15 },
+  priceStr: '1099.99 грн',
+  quantityStr: '3',
+  deliveryDay: 3,
+  tempNote: 'службова нотатка, видалити перед відправкою',
+}
 
-let firstName = "tARAS";
-let lastName = "shevchenko";
-let birthYear = "1994";
-let email = "Taras.Shevchenko@Gmail.com";
-let isSubscribed = true;
-let nickname;
-let visits = 0;
-const currentYear = 2026;
+// Крок 1. Об'єкти
+orderObj.city = 'Київ';
+console.log(`${orderObj.customer.firstName} ${orderObj.customer.lastName} from ${orderObj.city}`);
 
-// ==== КОД НИЖЧЕ ====
+// Крок 2. in / delete
+console.log('tempNote' in orderObj); 
+delete orderObj.tempNote;
+console.log('tempNote' in orderObj);
 
-console.log(typeof birthYear);
+// Крок 3. Копіювання об'єктів
+const backupOrder = JSON.parse(JSON.stringify(orderObj));
+backupOrder.customer.firstName = 'Ann';
+console.log(orderObj.customer.firstName); 
+const paidOrder = Object.assign({}, orderObj, { status: 'paid' });
+console.log("status" in orderObj);
 
-birthYear = Number(birthYear);
-console.log(typeof birthYear);
-console.log(birthYear);
+// Крок 4. Перетворення типів
+let price = parseFloat(orderObj.priceStr);
+let quantity = parseInt(orderObj.quantityStr);
+let total = price * quantity;
+console.log(price);
+console.log(quantity);
+console.log(total);
 
-let ageIn10Years = currentYear - birthYear;
-console.log(ageIn10Years);
-console.log(ageIn10Years+10);
+// Крок 5. Тернарний оператор
+let discount = orderObj.customer.age < 18 ? 0.1 : orderObj.customer.age >= 60 ? 0.15 : 0;
+let finalTotal = total * (1 - discount);
+console.log(discount);
+console.log(finalTotal);
 
-firstName = firstName[0].toUpperCase() + firstName.slice(1).toLowerCase();
-lastName = lastName[0].toUpperCase() + lastName.slice(1).toLowerCase();
-console.log(firstName);
-console.log(lastName);
+// Крок 6. if ... else if ... else
+if (finalTotal < 500) {
+  console.log('Доставка 100');
+} else if (finalTotal >= 500 && finalTotal < 1500) {
+  console.log('Доставка 50');
+} else {
+  console.log('Доставка безкоштовна');
+}
 
-fullName = firstName + " " + lastName;
-console.log(fullName);
-console.log(fullName.length);
+// Крок 7. switch / case / default
+let deliveryDayName;
 
-let login = email.slice(0, email.indexOf("@"));
-let domain = email.slice(email.indexOf("@") + 1).toLowerCase();
-console.log(login);
-console.log(domain);
+switch (orderObj.deliveryDay) {
+  case 1:
+    deliveryDayName = 'понеділок';
+    break;
+  case 2:
+    deliveryDayName = 'вівторок';
+    break;
+  case 3:
+    deliveryDayName = 'середа';
+    break;
+  case 4:
+    deliveryDayName = 'четвер';
+    break;
+  case 5:
+    deliveryDayName = 'п’ятниця';
+    break;
+  case 6:
+    deliveryDayName = 'субота';
+    break;
+  case 7:
+    deliveryDayName = 'неділя';
+    break;
+  default:
+    deliveryDayName = 'невідомий день';
+}
 
-let maskedEmail = login.slice(0, 2) + "***" + "@" + domain;
-console.log(maskedEmail);
+console.log(`Доставка у ${deliveryDayName}`);
 
+// Крок 8. Цикл for, оператор кома, break / continue
+let bonusSum=0;
 
-let isAdult = ageIn10Years >= 18;
-console.log(isAdult);
-console.log(typeof isAdult);
+for (let i = 1; i <= 20, bonusSum <= 50; i++) {
+  if (i % 3 === 0) {
+    continue;
+  }
+  bonusSum += i;
+}
 
-console.log(isAdult && isSubscribed);
-console.log(isAdult || isSubscribed);
-console.log(!isSubscribed);
-
-let displayName = nickname || fullName;
-console.log(displayName);
-
-let daysLived = Math.round(ageIn10Years * 365.25);
-console.log(daysLived);
-
-let confirmationCode = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-console.log(confirmationCode);
-
-console.log(visits++);
-console.log(visits);
-console.log(++visits);
-console.log(visits);
-
-let userCard = {
-  "Користувач": fullName,
-  "Показувати як": displayName,
-  "Вік": (currentYear - birthYear) + "(через 10 років — " + (ageIn10Years + 10) + ")",
-  "Email": maskedEmail,
-  "Повнолітній": isAdult,
-  "Підписка": (isAdult && isSubscribed),
-  "Входів": visits,
-  "Прожито днів": daysLived,
-  "Код підтвердження": confirmationCode
-} 
-console.log(userCard);
+console.log(`Сума бонусів: ${bonusSum}`);
