@@ -1,3 +1,3 @@
-# Home-work-21
+# Home-work-22
 
-## Принципи вищих функцій і замикань
+## JavaScript Essentials: Замикання, Math оператори та рекурсія

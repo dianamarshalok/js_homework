@@ -1,44 +1,152 @@
-console.log('#21. JavaScript homework: читацький клуб')
+console.log('#5. JavaScript homework example file')
 
-const memberObj = {
-  name: 'Olena',
-  yearOfBirth: 1998,
-  city: 'Львів',
-  booksPerMonth: 3,
-  favoriteGenre: 'фентезі',
+/*
+ * #1
+ *
+ * Створіть функцію counter(), яка має реалізувати лічильник за допомогою замикання:
+ * функція може приймати число як аргумент counter(n)
+ * якщо число передано у функцію - лічба починається із зазначеного числа
+ * якщо ні - то лічба триває
+ */
+
+function counter() {
+  let count = 0;
+  return function(n) {
+    if (n !== undefined) {
+      count = n;
+    }
+    return count++;
+  };
+}
+const counterInstance = counter();
+console.log(counterInstance()) // 0
+console.log(counterInstance()) // 1
+console.log(counterInstance(100)) // 100
+console.log(counterInstance()) // 101
+console.log(counterInstance()) // 102
+console.log(counterInstance(500)) // 500
+console.log(counterInstance()) // 501
+console.log(counterInstance()) // 502
+console.log(counterInstance(0)) // 0
+console.log(counterInstance()) // 0
+console.log(counterInstance()) // 1
+
+/* 
+ * #2
+ *
+ * Створіть функцію counterFactory, яка має реалізувати три методи за допомогою замикання:
+ * початкове значення лічильника - 0
+ * counterFactory.value() - повертає значення лічильника
+ * counterFactory.value(n) - встановлює значення лічильника, повертає нове значення
+ * counterFactory.increment() - збільшує значення лічильника на 1
+ * counterFactory.decrement() - зменшує значення лічильника на 1
+ */
+
+const counterFactory = function (count) {
+  count = 0;
+  function value(n) {
+    if (n !== undefined) {
+      count = n;
+    }
+    return count;
+  }
+  function increment() {
+    return ++count;
+  }
+  function decrement() {
+    return --count;
+  }
+  return {
+    value,
+    increment,
+    decrement
+  };
+};
+
+const counterFactoryInstance = counterFactory();
+console.log(counterFactoryInstance.value()) // 0
+counterFactoryInstance.increment()
+counterFactoryInstance.increment()
+counterFactoryInstance.increment()
+console.log(counterFactoryInstance.value()) // 3
+counterFactoryInstance.decrement()
+counterFactoryInstance.decrement()
+console.log(counterFactoryInstance.value()) // 1
+console.log(counterFactoryInstance.value(100)) // 100
+counterFactoryInstance.decrement()
+console.log(counterFactoryInstance.value()) // 99
+console.log(counterFactoryInstance.value(200)) // 200
+counterFactoryInstance.increment()
+console.log(counterFactoryInstance.value()) // 201
+
+/*
+ * #3
+ *
+ * Створіть функцію myPow(a, b, myPrint). Всередині реалізуйте рекурсію для підрахунку результату піднесення числа a до ступеня b.
+ * - Функція myPrint(a, b, res) - глобальна функція, що має генерувати з параметрів a, b, res рядок вигляду 'a^b=res' і повертати його.
+ * - myPrint() має бути передана в myPow() як параметр і викликана всередині як callback-функція.
+ * - функція myPow() як значення, що повертається, приймає результат myPrint().
+ * Наприклад:
+ * console.log(myPow(3, 4, myPrint)); // 3^4=81
+ * console.log(myPow(2, 3, myPrint)); // 2^3=8
+ * console.log(myPow(2, 0, myPrint))  // 2^0=1
+ * console.log(myPow(2, -2, myPrint)) // 2^-2=0.25
+ */
+
+const myPrint = (a, b, res) => a + '^' + b + '=' + res;
+const myPow = (a, b, myPrint) => {
+  if (b === 0) {
+    return myPrint(a, b, 1);
+  }
+  if (b < 0) {
+    return myPrint(a, b, 1 / myPow(a, -b, myPrint).split('=')[1]);
+  }
+  return myPrint(a, b, a * myPow(a, b - 1, myPrint).split('=')[1]);
 }
 
-// Завдання 1. Функція, параметри за замовчуванням, перевірка на undefined
+console.log(myPow(3, 4, myPrint)) // 3^4=81
+console.log(myPow(2, 3, myPrint)) // 2^3=8
+console.log(myPow(2, 0, myPrint)) // 2^0=1
+console.log(myPow(2, -2, myPrint)) // 2^-2=0.25
 
-function memberCard(name, yearOfBirth, favoriteGenre, city = 'Київ') {
-  if (name && name.length) {
-    name = `My name is ${name}.`;
-  }
-  if (yearOfBirth) {
-    let age = new Date().getFullYear() - yearOfBirth;
-    yearOfBirth = `I am ${age} years old.`;
-  }
-  if (favoriteGenre && favoriteGenre.length) {
-    favoriteGenre = `I read ${favoriteGenre}.`;
-  }
-  if (city && city.length) {
-    city = `I live in ${city}.`;
-  }
-  return `${name || ''} ${yearOfBirth || ''} ${favoriteGenre || ''} ${city || ''}`.trim();
-}
-memberCard();
-console.log(memberCard(memberObj.name, memberObj.yearOfBirth, memberObj.favoriteGenre, memberObj.city));
-console.log(memberCard(memberObj.name, memberObj.yearOfBirth, memberObj.favoriteGenre));
-console.log(memberCard(memberObj.name, memberObj.yearOfBirth, undefined, memberObj.city));
 
-// Завдання 2. Функція і цикл for ... in
+/*
+ * #4
+ * Створіть функцію myMax(arr), яка як параметр приймає
+ * довільний числовий масив і повертає максимальне число з переданого їй масиву.
+ * У реалізації функції має бути застосовано метод Math.max() і apply().
+ */
 
-function describeMember(memberObj) {
-  let result = '';
-  for (const key in memberObj) {
-      result += `${key}: ${memberObj[key]}; `;
-  }
-  return result;
-}
-describeMember(memberObj);
-console.log(describeMember(memberObj));
+const list = [12, 23, 100, 34, 56, 9, 233]
+const myMax = (arr) => {return Math.max.apply(null, arr)};
+
+console.log(myMax(list)); // 233
+
+/*
+ * #5
+ *
+ * Створіть функцію myMul(a, b), яка буде множити числа а і b, повертаючи результат.
+ */
+
+const myMul = (a, b) => a * b;
+console.log(myMul(2, 3)) 
+
+/*
+ * Створіть функції myDouble(n), яка приймає один параметр і подвоює його.
+ * Використовувати множення або інші математичні операції всередині функції - заборонено, тільки bind() і myMul().
+ * Функція повертає результат обчислення.
+ */
+
+const myDouble = myMul.bind(null, 2);
+
+console.log(myDouble(3)) // = myMul(2, 3) = 6
+console.log(myDouble(4)) // = myMul(2, 4) = 8
+console.log(myDouble(5)) // = myMul(2, 5) = 10
+
+// Аналогічним чином створюємо функцію myTriple(n), яка потроює параметр, що приймає, повертаючи результат.
+
+const myTriple = myMul.bind(null, 3);
+
+console.log(myTriple(3)) // = myMul(3, 3) = 9
+console.log(myTriple(4)) // = myMul(3, 4) = 12
+console.log(myTriple(5)) // = myMul(3, 5) = 15
