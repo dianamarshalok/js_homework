@@ -1,3 +1,3 @@
-# Home-work-22
+# Home-work-23
 
-## JavaScript Essentials: Замикання, Math оператори та рекурсія
+## Моделювання даних у JavaScript: Колекції, класи, функції
